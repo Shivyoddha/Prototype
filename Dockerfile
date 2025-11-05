@@ -1,8 +1,8 @@
-FROM ruby:3.2.3
+FROM ruby:3.2.0
 
 # Install dependencies
 RUN apt-get update -qq && \
-    apt-get install -y nodejs postgresql-client build-essential libpq-dev && \
+    apt-get install -y nodejs build-essential sqlite3 libsqlite3-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -19,6 +19,9 @@ RUN bundle install
 
 # Copy the rest of the application
 COPY . .
+
+# Create storage directory for SQLite databases
+RUN mkdir -p storage
 
 # Expose port
 EXPOSE 3000
