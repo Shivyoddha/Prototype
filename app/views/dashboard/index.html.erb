@@ -1,4 +1,4 @@
-<h2>Dashboard - Welcome <%= current_user.user_name %></h2>
+<h2>Dashboard - Welcome <%= current_user.display_name_or_username %></h2>
 
 <div style="display: grid; grid-template-columns: <%= current_user.buyer? ? '1fr' : '1fr 1fr' %>; gap: 20px; margin-top: 30px;">
   
