@@ -1,0 +1,155 @@
+<h2>Dashboard - Welcome <%= current_user.user_name %></h2>
+
+<div style="display: grid; grid-template-columns: <%= current_user.buyer? ? '1fr' : '1fr 1fr' %>; gap: 20px; margin-top: 30px;">
+  
+  <% if current_user.approver? %>
+    <!-- Pending Approvals - Only for Approvers -->
+    <div class="card">
+      <h3>Pending My Approval</h3>
+      
+      <% if @pending_doc_as.any? %>
+        <h4 style="color: #667eea; margin-top: 15px; margin-bottom: 10px;">Document A</h4>
+        <% @pending_doc_as.each do |doc| %>
+          <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 10px;">
+            <strong><%= doc.eq_id %></strong> - <%= doc.name %><br>
+            <span style="color: #666; font-size: 14px;">Cost: Rs. <%= doc.cost %></span>
+            <%= link_to "Review", doc_a_path(doc), class: "btn btn-primary", style: "margin-top: 10px; font-size: 12px; padding: 6px 12px;" %>
+          </div>
+        <% end %>
+      <% end %>
+      
+      <% if @pending_doc_bs.any? %>
+        <h4 style="color: #667eea; margin-top: 15px; margin-bottom: 10px;">Document B</h4>
+        <% @pending_doc_bs.each do |doc| %>
+          <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 10px;">
+            <strong><%= doc.eq_id %></strong> - <%= doc.name %><br>
+            <span style="color: #666; font-size: 14px;">Cost: Rs. <%= doc.cost %></span>
+            <%= link_to "Review", doc_b_path(doc), class: "btn btn-primary", style: "margin-top: 10px; font-size: 12px; padding: 6px 12px;" %>
+          </div>
+        <% end %>
+      <% end %>
+      
+      <% if @pending_doc_as.empty? && @pending_doc_bs.empty? %>
+        <p style="color: #999;">No pending approvals</p>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <!-- My Documents / My Processed Documents -->
+  <div class="card">
+    <% if current_user.buyer? %>
+      <h3>My Documents</h3>
+      <div style="margin-bottom: 20px;">
+        <%= link_to "New Document A", new_doc_a_path, class: "btn btn-primary", style: "margin-right: 10px;" %>
+        <%= link_to "New Document B", new_doc_b_path, class: "btn btn-success" %>
+      </div>
+      
+      <!-- Tab Navigation -->
+      <div style="border-bottom: 2px solid #e5e7eb; margin-bottom: 20px;">
+        <button onclick="showTab('docA')" id="tab-docA" class="tab-button active" style="background: none; border: none; padding: 12px 24px; font-size: 14px; font-weight: 600; color: #2563eb; border-bottom: 2px solid #2563eb; cursor: pointer; margin-bottom: -2px;">Document A</button>
+        <button onclick="showTab('docB')" id="tab-docB" class="tab-button" style="background: none; border: none; padding: 12px 24px; font-size: 14px; font-weight: 500; color: #6b7280; cursor: pointer; margin-bottom: -2px;">Document B</button>
+      </div>
+      
+      <!-- Document A Tab Content -->
+      <div id="content-docA" class="tab-content">
+        <% if @my_doc_as.any? %>
+          <% @my_doc_as.each do |doc| %>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 10px;">
+              <strong><%= doc.eq_id %></strong> - <%= doc.name %><br>
+              <span class="badge badge-<%= badge_color_for_status(doc.status) %>"><%= doc.status.humanize %></span>
+              <%= link_to "View", doc_a_path(doc), class: "btn btn-secondary", style: "margin-top: 10px; font-size: 12px; padding: 6px 12px;" %>
+              <% if doc.approved? && !DocB.exists?(eq_id: doc.eq_id) %>
+                <%= link_to "Create Document B", new_doc_b_path(doc_a_id: doc.id), class: "btn btn-success", style: "margin-top: 10px; font-size: 12px; padding: 6px 12px; margin-left: 5px;" %>
+              <% end %>
+            </div>
+          <% end %>
+        <% else %>
+          <p style="color: #999;">No Document A applications yet</p>
+        <% end %>
+      </div>
+      
+      <!-- Document B Tab Content -->
+      <div id="content-docB" class="tab-content" style="display: none;">
+        <% if @my_doc_bs.any? %>
+          <% @my_doc_bs.each do |doc| %>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 10px;">
+              <strong><%= doc.eq_id %></strong> - <%= doc.name %><br>
+              <span class="badge badge-<%= badge_color_for_status(doc.status) %>"><%= doc.status.humanize %></span>
+              <%= link_to "View", doc_b_path(doc), class: "btn btn-secondary", style: "margin-top: 10px; font-size: 12px; padding: 6px 12px;" %>
+            </div>
+          <% end %>
+        <% else %>
+          <p style="color: #999;">No Document B applications yet</p>
+        <% end %>
+      </div>
+      
+      <script>
+        function showTab(tabName) {
+          // Hide all tab contents
+          document.getElementById('content-docA').style.display = 'none';
+          document.getElementById('content-docB').style.display = 'none';
+          
+          // Remove active class from all buttons
+          document.getElementById('tab-docA').classList.remove('active');
+          document.getElementById('tab-docB').classList.remove('active');
+          document.getElementById('tab-docA').style.color = '#6b7280';
+          document.getElementById('tab-docA').style.fontWeight = '500';
+          document.getElementById('tab-docA').style.borderBottom = 'none';
+          document.getElementById('tab-docB').style.color = '#6b7280';
+          document.getElementById('tab-docB').style.fontWeight = '500';
+          document.getElementById('tab-docB').style.borderBottom = 'none';
+          
+          // Show selected tab content
+          document.getElementById('content-' + tabName).style.display = 'block';
+          
+          // Add active class to selected button
+          var activeButton = document.getElementById('tab-' + tabName);
+          activeButton.classList.add('active');
+          activeButton.style.color = '#2563eb';
+          activeButton.style.fontWeight = '600';
+          activeButton.style.borderBottom = '2px solid #2563eb';
+        }
+      </script>
+      
+    <% else %>
+      <!-- For Approvers: Documents I've Processed -->
+      <h3>Documents I've Processed</h3>
+      
+      <h4 style="color: #667eea; margin-top: 15px; margin-bottom: 10px;">Document A</h4>
+      <% if @processed_doc_as.any? %>
+        <% @processed_doc_as.each do |doc| %>
+          <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 10px;">
+            <strong><%= doc.eq_id %></strong> - <%= doc.name %><br>
+            <span style="color: #666; font-size: 14px;">Cost: Rs. <%= doc.cost %></span><br>
+            <span style="color: #666; font-size: 12px;">
+              Created by: <%= doc.user.user_name %> | 
+              Status: <span class="badge badge-<%= badge_color_for_status(doc.status) %>"><%= doc.status.humanize %></span>
+            </span><br>
+            <%= link_to "View Details", doc_a_path(doc), class: "btn btn-secondary", style: "margin-top: 10px; font-size: 12px; padding: 6px 12px;" %>
+          </div>
+        <% end %>
+      <% else %>
+        <p style="color: #999;">No processed documents</p>
+      <% end %>
+      
+      <h4 style="color: #667eea; margin-top: 15px; margin-bottom: 10px;">Document B</h4>
+      <% if @processed_doc_bs.any? %>
+        <% @processed_doc_bs.each do |doc| %>
+          <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 10px;">
+            <strong><%= doc.eq_id %></strong> - <%= doc.name %><br>
+            <span style="color: #666; font-size: 14px;">Cost: Rs. <%= doc.cost %></span><br>
+            <span style="color: #666; font-size: 12px;">
+              Created by: <%= doc.user.user_name %> | 
+              Status: <span class="badge badge-<%= badge_color_for_status(doc.status) %>"><%= doc.status.humanize %></span>
+            </span><br>
+            <%= link_to "View Details", doc_b_path(doc), class: "btn btn-secondary", style: "margin-top: 10px; font-size: 12px; padding: 6px 12px;" %>
+          </div>
+        <% end %>
+      <% else %>
+        <p style="color: #999;">No processed documents</p>
+      <% end %>
+    <% end %>
+  </div>
+  
+</div>
+

@@ -1,0 +1,41 @@
+*.rbc
+capybara-*.html
+.rspec
+/log
+/tmp
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/public/system
+/coverage/
+/spec/tmp
+*.orig
+rerun.txt
+pickle-email-*.html
+
+# Ignore bundler config
+/.bundle
+
+# Ignore all logfiles and tempfiles
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore master key for decrypting credentials
+/config/master.key
+
+# Environment variables
+.env
+.env.local
+
+# Node modules
+node_modules/
+
+# Editor files
+*.swp
+*~
+.project
+.config
+.idea
+.DS_Store
+

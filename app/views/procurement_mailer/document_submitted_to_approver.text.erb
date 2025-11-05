@@ -1,0 +1,20 @@
+New Document Requires Your Approval
+
+Dear <%= @approver_name %>,
+
+A new procurement document has been submitted and requires your approval.
+
+Document Details:
+- Equipment ID: <%= @document.eq_id %>
+- Equipment Name: <%= @document.name %>
+- Cost: ₹<%= @document.cost %>
+- Head: <%= @document.head %>
+- Created by: <%= @creator.user_name %>
+- Submitted on: <%= @document.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+
+Please log in to the IRIS Procurement Portal to review and approve this document.
+
+Visit: http://localhost:3000
+
+Thank you for your attention.
+

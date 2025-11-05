@@ -1,0 +1,22 @@
+<h2>Document Rejected - Notification</h2>
+
+<p>Dear <%= @display_name %>,</p>
+
+<p>Your procurement document has been rejected.</p>
+
+<div class="info-box">
+  <h3>Document Details:</h3>
+  <p><strong>Equipment ID:</strong> <%= @document.eq_id %></p>
+  <p><strong>Equipment Name:</strong> <%= @document.name %></p>
+  <p><strong>Cost:</strong> ₹<%= @document.cost %></p>
+  <p><strong>Status:</strong> <span class="status-badge status-rejected">Rejected</span></p>
+  <p><strong>Rejection Reason:</strong> <%= @rejection_message %></p>
+  <p><strong>Rejected on:</strong> <%= @document.updated_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+</div>
+
+<p>Please review the comments and take necessary action.</p>
+
+<p><a href="http://localhost:3000" style="display: inline-block; padding: 12px 24px; background: #2563eb; color: white; text-decoration: none; border-radius: 4px;">View Document</a></p>
+
+<p>Thank you.</p>
+

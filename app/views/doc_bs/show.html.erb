@@ -1,0 +1,107 @@
+<h2>Document B Details</h2>
+
+<div class="card">
+  <h3>Basic Information</h3>
+  <table class="table">
+    <tr>
+      <th width="200">Equipment ID</th>
+      <td><%= @doc_b.eq_id %></td>
+    </tr>
+    <tr>
+      <th>Equipment Name</th>
+      <td><%= @doc_b.name %></td>
+    </tr>
+    <tr>
+      <th>Cost</th>
+      <td>Rs. <%= @doc_b.cost %></td>
+    </tr>
+    <tr>
+      <th>Head</th>
+      <td><%= @doc_b.head %></td>
+    </tr>
+    <tr>
+      <th>Proceedings</th>
+      <td><%= @doc_b.proceedings %></td>
+    </tr>
+    <tr>
+      <th>Status</th>
+      <td><span class="badge badge-<%= badge_color_for_status(@doc_b.status) %>"><%= @doc_b.status.humanize %></span></td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Approval History</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Date</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>U</strong></td>
+        <td><%= @doc_b.u_date&.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= @doc_b.u_remarks %></td>
+      </tr>
+      <tr>
+        <td><strong>P</strong></td>
+        <td><%= @doc_b.p_date&.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= @doc_b.p_remarks %></td>
+      </tr>
+      <tr>
+        <td><strong>Q</strong></td>
+        <td><%= @doc_b.q_date&.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= @doc_b.q_remarks %></td>
+      </tr>
+      <tr>
+        <td><strong>R</strong></td>
+        <td><%= @doc_b.r_date&.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= @doc_b.r_remarks %></td>
+      </tr>
+      <tr>
+        <td><strong>S</strong></td>
+        <td><%= @doc_b.s_date&.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= @doc_b.s_remarks %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<% if can_approve?(@doc_b) %>
+  <div class="card approval-form">
+    <h3>Action Required</h3>
+    <%= form_with url: approve_doc_b_path(@doc_b), method: :post, local: true do |form| %>
+      <div class="form-group">
+        <%= form.label :remarks, "Your Remarks" %>
+        <%= form.text_area :remarks, class: "form-control", rows: 4, required: true %>
+      </div>
+      
+      <div class="approval-actions">
+        <%= form.submit "Approve", class: "btn btn-success" %>
+        <%= link_to "Reject", "#", onclick: "showRejectForm(); return false;", class: "btn btn-danger" %>
+      </div>
+    <% end %>
+    
+    <%= form_with url: reject_doc_b_path(@doc_b), method: :post, local: true, id: "reject-form", style: "display:none;" do |form| %>
+      <div class="form-group">
+        <%= form.label :remarks, "Rejection Reason" %>
+        <%= form.text_area :remarks, class: "form-control", rows: 4, required: true %>
+      </div>
+      <%= form.submit "Confirm Reject", class: "btn btn-danger" %>
+    <% end %>
+  </div>
+<% end %>
+
+<script>
+function showRejectForm() {
+  document.getElementById('reject-form').style.display = 'block';
+}
+</script>
+
+<div style="margin-top: 20px;">
+  <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-secondary" %>
+</div>
+

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .header {
+        background: #2563eb;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      .content {
+        padding: 30px;
+      }
+      .footer {
+        background: #f5f5f5;
+        padding: 15px;
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+      }
+      .info-box {
+        background: #f8f9fa;
+        border-left: 4px solid #2563eb;
+        padding: 15px;
+        margin: 20px 0;
+      }
+      .status-badge {
+        display: inline-block;
+        padding: 5px 15px;
+        background: #dbeafe;
+        color: #1e40af;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+      .status-approved {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .status-rejected {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <h2>IRIS Procurement Portal</h2>
+      </div>
+      
+      <div class="content">
+        <%= yield %>
+      </div>
+      
+      <div class="footer">
+        <p>This is an automated message from IRIS Procurement Portal - ProcurementModule</p>
+        <p>© <%= Date.current.year %> National Institute of Technology Karnataka</p>
+      </div>
+    </div>
+  </body>
+</html>
+

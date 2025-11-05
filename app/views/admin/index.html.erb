@@ -1,0 +1,47 @@
+<h2>Admin Dashboard - User Management</h2>
+
+<div class="card">
+  <h3>All Users</h3>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Display Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Admin</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><strong><%= user.user_name %></strong></td>
+          <td><%= user.display_name || '-' %></td>
+          <td><%= user.email || '-' %></td>
+          <td>
+            <% if user.buyer? %>
+              <span class="badge badge-info">Buyer</span>
+            <% elsif user.approver? %>
+              <span class="badge badge-info">Approver</span>
+            <% elsif user.admin? %>
+              <span class="badge badge-success">Admin</span>
+            <% else %>
+              <span class="badge badge-secondary">User</span>
+            <% end %>
+          </td>
+          <td><%= user.is_admin? ? 'Yes' : 'No' %></td>
+          <td>
+            <%= link_to "Edit", admin_edit_user_path(user), class: "btn btn-secondary", style: "font-size: 12px; padding: 4px 12px;" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div style="margin-top: 20px;">
+  <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-secondary" %>
+</div>
+
