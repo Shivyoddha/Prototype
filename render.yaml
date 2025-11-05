@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: iris-procurement-portal
+    env: ruby
+    buildCommand: bundle install && bundle exec rails db:migrate RAILS_ENV=production
+    startCommand: bundle exec rails server -p ${PORT:-3000}
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: GMAIL_USERNAME
+        sync: false
+      - key: GMAIL_PASSWORD
+        sync: false
+      - key: APP_HOST
+        sync: false
+
