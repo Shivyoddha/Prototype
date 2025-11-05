@@ -15,6 +15,9 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
   config.log_formatter = ::Logger::Formatter.new
   
+  # Secret key base - use environment variable or generate one
+  config.secret_key_base = ENV.fetch('SECRET_KEY_BASE') { SecureRandom.hex(64) }
+  
   # Active Storage configuration
   config.active_storage.service = :local
   
