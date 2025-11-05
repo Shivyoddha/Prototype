@@ -14,6 +14,7 @@ pickle-email-*.html
 
 # Ignore bundler config
 /.bundle
+/vendor/bundle
 
 # Ignore all logfiles and tempfiles
 /log/*
@@ -39,3 +40,13 @@ node_modules/
 .idea
 .DS_Store
 
+# Rails asset cache
+/public/assets
+/public/packs
+/public/packs-test
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+.storage
+/config/credentials.yml.enc
+/config/credentials/*.key
