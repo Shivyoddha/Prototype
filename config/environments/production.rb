@@ -15,6 +15,9 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
   config.log_formatter = ::Logger::Formatter.new
   
+  # Active Storage configuration
+  config.active_storage.service = :local
+  
   # Mailer configuration
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true

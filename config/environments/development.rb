@@ -7,6 +7,9 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
   config.active_record.verbose_query_logs = true
   
+  # Active Storage configuration
+  config.active_storage.service = :local
+  
   # Mailer configuration
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
