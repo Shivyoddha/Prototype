@@ -18,6 +18,12 @@ class AdminController < ApplicationController
     end
     
     if @user.update(user_params)
+      # Reload current_user if updating self, so display name updates immediately
+      if @user.id == current_user.id
+        @current_user = nil  # Clear cached instance variable
+        @user.reload  # Reload from database to get fresh data
+      end
+      
       redirect_to admin_index_path, notice: "User #{@user.user_name} updated successfully!"
     else
       render :edit_user
